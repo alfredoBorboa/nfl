@@ -1,0 +1,14 @@
+{
+  "name": "qr_code_read",
+  "version": "1.0.0",
+  "description": "read qr code sent locally",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ABO",
+  "license": "GPL-2.0",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}

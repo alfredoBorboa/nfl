@@ -1,0 +1,98 @@
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/jsqrcode-combined.min.js"></script>
+<script type="text/javascript" src="js/html5-qrcode.min.js"></script>
+<style>
+#container{
+  width:410px;
+  position:absolute;
+  left:50%;
+  transform: translate( -50%, 0 );
+}
+#reader{
+  transform: scale( 0.5 ) translate( -50%, -50% );
+}
+
+#clickOverlay{
+  position:absolute;
+  top:0;
+  left:0;
+  bottom:0;
+  right:0;
+  background-color:#FFF;
+  display: none;
+}
+</style>
+</head>
+<body>
+  <div id="container">
+  <div id="reader" style="width:500px;height:350px;float:left;margin-top:10px;">
+ </div>
+ <form style="float:left;margin-top:-150px;margin-left:10px;">
+  <div class="form-group">
+    <label for="pwd">badge_id:</label>
+    <input type="text" style="200px" class="form-control" id="codigo">
+  </div>
+  <button type="button" id="capturar" class="btn btn-default">Capturar Código</button><br><br>
+  <div style="float:left;width:200px" id="error"></div>
+</form>
+
+
+ </div><!--container-->
+
+ <div id="clickOverlay"></div>
+ <script>
+ // Chrome se debe iniciar con: open -a "/Applications/Google Chrome.app" --args --allow-file-access-from-files
+ $( document ).ready( function(){
+ $('#reader').html5_qrcode(function(data){
+
+        var test_str = data;
+        var start_pos = test_str.indexOf('*') + 1;
+        var end_pos = test_str.indexOf('_',start_pos);
+        var code = test_str.substring(start_pos + 1,end_pos);
+
+        $( "#clickOverlay" ).show( function(){
+          $( this ).fadeToggle( 'fast' );
+        });
+
+        $.ajax({
+						type: 'GET',
+						data: JSON.stringify(data),
+				        contentType: 'application/json',
+                        url: 'http://localhost:3000/code/' + code,
+                        success: function(data) {
+                            $( "#error" ).html( data );
+                        }
+                    });
+
+        //$( "#codigo" ).val( code );
+   },
+   function(error){
+       //show read errors
+       //alert( error );
+       $( "#error" ).html( error );
+   }, function(videoError){
+        $( "#error" ).html( videoError );
+        alert( videoError );
+       //the video stream could be opened
+   });//html5_qrcode
+});//document ready
+
+$( "#capturar" ).click( function(){
+  $.ajax({
+      type: 'GET',
+      contentType: 'application/json',
+      url: 'http://localhost:3000/code/' + $( "#codigo" ).val(),
+      success: function(data) {
+          $( "#error" ).html( data );
+      }
+   });
+});
+
+ </script>
+</body>
+</html>

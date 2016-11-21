@@ -1,0 +1,23 @@
+{
+  "name": "gif_generator",
+  "version": "1.0.0",
+  "description": "Detects changes to folder, and encodes the video into a GIF",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ABO",
+  "license": "GPL-2.0",
+  "dependencies": {
+    "express": "^4.14.0",
+    "fs": "0.0.1-security",
+    "gify": "^0.2.0",
+    "gm": "^1.23.0",
+    "hound": "^1.0.4",
+    "jsftp": "^1.5.5",
+    "md5-file": "^3.1.1",
+    "mv": "^2.1.1",
+    "mysql": "^2.12.0",
+    "request": "^2.78.0"
+  }
+}
